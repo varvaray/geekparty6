@@ -12,6 +12,7 @@ import nape.callbacks.InteractionCallback;
 import nape.callbacks.InteractionListener;
 import nape.callbacks.InteractionType;
 import nape.callbacks.OptionType;
+import nape.constraint.Constraint;
 import nape.constraint.PivotJoint;
 import nape.geom.Vec2;
 import nape.phys.Body;
@@ -19,8 +20,6 @@ import nape.phys.BodyType;
 import nape.shape.Circle;
 import nape.shape.Polygon;
 import nape.space.Space;
-import nape.util.BitmapDebug;
-import nape.util.Debug;
 
 @:bitmap("res/catback.png") class CatBack extends flash.display.BitmapData {}
 
@@ -34,10 +33,12 @@ class Main
     var space:Space;
     var prevTime:Float;
     var keyPoll:KeyPoll;
-    var debug:Debug;
 
     var cat1:Cat;
     var cat2:Cat;
+    var loser:Cat;
+
+    public static var state = 0;
 
     function new(root:MovieClip)
     {
@@ -50,8 +51,8 @@ class Main
         var back = new Bitmap(new CatBack(0, 0));
         root.addChild(back);
 
-        cat1 = new Cat("Radiant", flash.Lib.attach("cat1"), space, root);
-        cat2 = new Cat("Dire", flash.Lib.attach("cat2"), space, root);
+        cat1 = new Cat("Radiant", flash.Lib.attach("cat1"), space, root, 250, 200);
+        cat2 = new Cat("Dire", flash.Lib.attach("cat2"), space, root, 550, 200);
 
         cat1.head.body.shapes.at(0).filter.collisionGroup = 2;
         cat1.thing.body.shapes.at(0).filter.collisionMask = 4;
@@ -60,10 +61,6 @@ class Main
 
         var listener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, HEAD, THING, hitHandler);
         space.listeners.add(listener);
-
-        debug = new BitmapDebug(root.stage.stageWidth, root.stage.stageHeight, root.stage.color);
-        // root.addChild(debug.display);
-        debug.display.alpha = 0.5;
 
         root.addEventListener(Event.ENTER_FRAME, onFrame);
         prevTime = haxe.Timer.stamp();
@@ -91,12 +88,16 @@ class Main
         victim.lastDamageTime = now;
 
         if (victim.life <= 0)
+        {
+            state = 1;
+            loser = victim;
             victim.setDead();
+            bully.setAngry(true);
+        }
         else
             victim.setHit();
-        bully.setAngry();
 
-        trace('${bully.name} hits ${victim.name} (life = ${victim.life})');
+        bully.setAngry();
     }
 
     function createBorder()
@@ -140,21 +141,14 @@ class Main
             vel.y = 10000;
         cat2.head.body.force.set(vel);
 
+        if (state == 1)
+            loser.head.body.velocity.setxy(0, -50);
+
         if (deltaTime > 0)
             space.step(deltaTime);
 
-        // test1.update();
-        // test2.update();
-
         cat1.update();
         cat2.update();
-
-        // Clear the debug display.
-        debug.clear();
-        // Draw our Space.
-        debug.draw(space);
-        // Flush draw calls, until this is called nothing will actually be displayed.
-        debug.flush();
     }
 
     static function main()
@@ -170,26 +164,19 @@ class Cat
     public var name:String;
 
     public var head:Entity;
+    public var thing:Entity;
+    var tailJoint:Constraint;
     var tail1:Entity;
     var tail2:Entity;
     var tail3:Entity;
-    public var thing:Entity;
 
     var faceTimer:haxe.Timer;
+    var origin:Point;
 
-    function createTailPartBody(space):Body
-    {
-        var tail1Body = new Body();
-        var tailShape = new Polygon(Polygon.rect(-7, 0, 14, 42));
-        tailShape.filter.collisionMask = 0;
-        tail1Body.shapes.add(tailShape);
-        tail1Body.space = space;
-        return tail1Body;
-    }
-
-    public function new(name, mc:MovieClip, space:Space, container:DisplayObjectContainer)
+    public function new(name, mc:MovieClip, space:Space, container:DisplayObjectContainer, x, y)
     {
         this.name = name;
+        origin = new Point(x, y);
 
         var headBody = new Body();
         headBody.position.setxy(100, 100);
@@ -199,8 +186,8 @@ class Cat
         headBody.cbTypes.add(Main.HEAD);
 
         var tail1Body = createTailPartBody(space);
-        var joint = new PivotJoint(headBody, tail1Body, new Vec2(0, 48), new Vec2(0, 0));
-        joint.space = space;
+        tailJoint = new PivotJoint(headBody, tail1Body, new Vec2(0, 48), new Vec2(0, 0));
+        tailJoint.space = space;
 
         var tail2Body = createTailPartBody(space);
         var joint = new PivotJoint(tail1Body, tail2Body, new Vec2(0, 36), new Vec2(0, 0));
@@ -218,7 +205,6 @@ class Cat
         joint.space = space;
 
         head = new Entity(mc.head, headBody);
-        addEntity(head, space, container);
         tail1 = new Entity(mc.tail1, tail1Body);
         addEntity(tail1, space, container);
         tail2 = new Entity(mc.tail2, tail2Body);
@@ -226,9 +212,32 @@ class Cat
         tail3 = new Entity(mc.tail3, tail3Body);
         addEntity(tail3, space, container);
         thing = new Entity(mc.thing, thingBody);
+        addEntity(head, space, container);
         addEntity(thing, space, container);
 
+        resetPosition();
         setCalm();
+    }
+
+    public function resetPosition()
+    {
+        var y = origin.y;
+        head.body.position.setxy(origin.x, y);
+        tail1.body.position.setxy(origin.x, y += 48);
+        tail2.body.position.setxy(origin.x, y += 36);
+        tail3.body.position.setxy(origin.x, y += 36);
+        thing.body.position.setxy(origin.x, y += 42);
+        update();
+    }
+
+    function createTailPartBody(space):Body
+    {
+        var tail1Body = new Body();
+        var tailShape = new Polygon(Polygon.rect(-7, 0, 14, 42));
+        tailShape.filter.collisionMask = 0;
+        tail1Body.shapes.add(tailShape);
+        tail1Body.space = space;
+        return tail1Body;
     }
 
     function addEntity(entity:Entity, space:Space, container:DisplayObjectContainer):Void
@@ -245,12 +254,20 @@ class Cat
     public function setDead()
     {
         setFrame(4);
+        head.body.shapes.at(0).filter.collisionMask = 0;
+        tail1.body.shapes.at(0).filter.collisionMask = 0;
+        tail2.body.shapes.at(0).filter.collisionMask = 0;
+        tail3.body.shapes.at(0).filter.collisionMask = 0;
+        thing.body.shapes.at(0).filter.collisionMask = 0;
+        tailJoint.active = false;
+        head.body.velocity.setxy(0, -50);
     }
 
-    public function setAngry()
+    public function setAngry(forever = false)
     {
         setFrame(3);
-        faceTimer = haxe.Timer.delay(setCalm, 1000);
+        if (!forever)
+            faceTimer = haxe.Timer.delay(setCalm, 1000);
     }
 
     public function setHit()
