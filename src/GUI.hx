@@ -76,24 +76,26 @@ private var shape2:Shape;
 
         var bar2PicHP:Bitmap = new Bitmap(new Cat2BarMaskPic(0,0));
         bar2.addChild(bar2PicHP);
+        bar2PicHP.y = 65;
+        bar2PicHP.x = 12;
 
         var shape2:Shape = new Shape();
         shape2.graphics.beginFill(0xFF0000);
         shape2.graphics.drawRect(0,0, 133,24);
         shape2.graphics.endFill();
-        shape2.x = 800 - bar2.width - 15;
+        shape2.x = 12;
         shape2.y = 65;
 
         var bar2Mask:Bitmap = new Bitmap(new Cat2BarMaskPic(0,0));
-        bar2PicHP.x = 800 - bar2.width - 15;
+        bar2PicHP.x = 12;
         bar2PicHP.y = 65;
         bar2Mask.alpha = 0;
 
-        bar2.x = 800 - bar2.width - 15;
+        bar2.x = 565;
 
-        bar2.addChild(shape2);
-        bar2.addChild(bar2Mask);
-        // shape1.mask = bar1Mask;
+        // bar2.addChild(shape2);
+        // bar2.addChild(bar2Mask);
+        // shape2.mask = bar2Mask;
         addChild(bar2);
         shape2.width = 0;
 
