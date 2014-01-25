@@ -109,11 +109,8 @@ private var shape2:Shape;
     	if (keyPoll.isDown(Keyboard.SPACE))
     	{
             btnPlay.visible = false;
-<<<<<<< HEAD
             if (start != null) start();
-=======
             SoundManager.playSound(new Sound(SoundManager.GameMusic));
->>>>>>> 3
     	}
     }
 
