@@ -26,9 +26,13 @@ import nape.util.Debug;
 
 class Main
 {
+<<<<<<< HEAD
     public static var HEAD = new CbType();
     public static var THING = new CbType();
 
+=======
+    var gui:GUI;
+>>>>>>> Particles in res + few gui
     var root:DisplayObjectContainer;
     var space:Space;
     var prevTime:Float;
@@ -66,6 +70,9 @@ class Main
 
         root.addEventListener(Event.ENTER_FRAME, onFrame);
         prevTime = haxe.Timer.stamp();
+
+        gui = new GUI(keyPoll);
+        root.addChild(gui);
     }
 
     function hitHandler(cb:InteractionCallback)
