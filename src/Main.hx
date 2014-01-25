@@ -52,6 +52,7 @@ class Main
     {
         gui.start = null;
         game = new Game(root, keyPoll);
+        game.onHit = gui.onHit;
     }
 
     static function main()

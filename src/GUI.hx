@@ -98,9 +98,9 @@ private var shape2:Shape;
 
     }
 
-    public function setCat1Hp():Void
+    public function onHit(game:Game):Void
     {
-    	shape1.width = 123;
+//    	shape1.width = 123;
     }
 
     private function onFrame(event:Event):Void
