@@ -4,6 +4,7 @@ import flash.events.Event;
 import flash.display.Shape;
 import flash.display.Bitmap;
 import flash.ui.Keyboard;
+import flash.media.Sound;
 
 @:bitmap("res/PLAY.png") class BtnPlayPic extends flash.display.BitmapData {}
 @:bitmap("res/VS.png") class VSPic extends flash.display.BitmapData {}
@@ -108,7 +109,11 @@ private var shape2:Shape;
     	if (keyPoll.isDown(Keyboard.SPACE))
     	{
             btnPlay.visible = false;
+<<<<<<< HEAD
             if (start != null) start();
+=======
+            SoundManager.playSound(new Sound(SoundManager.GameMusic));
+>>>>>>> 3
     	}
     }
 
