@@ -108,6 +108,9 @@ private var shape2:Shape;
     	if (keyPoll.isDown(Keyboard.SPACE))
     	{
             btnPlay.visible = false;
+            if (start != null) start();
     	}
     }
+
+    public var start:Void->Void;
 }

@@ -39,8 +39,10 @@ class Game
 
     public dynamic function onHit(game:Game):Void {};
 
-    public function new(root:MovieClip, keyPoll:KeyPoll)
+    public function new(container:DisplayObjectContainer, keyPoll:KeyPoll)
     {
+        var root = new Sprite();
+        container.addChild(root);
         this.root = root;
         this.keyPoll = keyPoll;
 
@@ -66,6 +68,7 @@ class Game
     public function destroy()
     {
         root.removeEventListener(Event.ENTER_FRAME, onFrame);
+        root.parent.removeChild(root);
     }
 
     function hitHandler(cb:InteractionCallback)

@@ -38,10 +38,20 @@ class Main
         var back = new Bitmap(new CatBack(0, 0));
         root.addChild(back);
 
-        game = new Game(root, keyPoll);
+        var help = new flash.text.TextField();
+        help.text = "Start: space\nPlayer1: WASD\nPlayer2: Arrows";
+        root.addChild(help);
+        help.x = (root.stage.stageWidth - help.textWidth) / 2;
 
         gui = new GUI(keyPoll);
+        gui.start = start;
         root.addChild(gui);
+    }
+
+    function start()
+    {
+        gui.start = null;
+        game = new Game(root, keyPoll);
     }
 
     static function main()
