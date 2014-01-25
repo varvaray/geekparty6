@@ -21,6 +21,7 @@ import nape.shape.Circle;
 import nape.shape.Polygon;
 import nape.space.Space;
 
+
 class Game
 {
     public static var HEAD = new CbType();
@@ -60,6 +61,11 @@ class Game
 
         var listener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, HEAD, THING, hitHandler);
         space.listeners.add(listener);
+
+        var data = haxe.Resource.getBytes("music");
+        var sound = new flash.media.Sound();
+        sound.loadCompressedDataFromByteArray(data.getData(), data.length);
+        sound.play(0, 100);
 
         root.addEventListener(Event.ENTER_FRAME, onFrame);
         prevTime = haxe.Timer.stamp();

@@ -110,7 +110,6 @@ private var shape2:Shape;
     	{
             btnPlay.visible = false;
             if (start != null) start();
-            SoundManager.playSound(new Sound(SoundManager.GameMusic));
     	}
     }
 
