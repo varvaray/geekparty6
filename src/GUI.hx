@@ -1,5 +1,7 @@
 import flash.display.Sprite;
+import flash.display.MovieClip;
 import flash.events.Event;
+import flash.display.Shape;
 import flash.display.Bitmap;
 import flash.ui.Keyboard;
 
@@ -16,6 +18,10 @@ class GUI extends Sprite {
 
 private var btnPlay:Sprite;
 private var keyPoll:KeyPoll;
+private var bar1:Sprite;
+private var bar2:Sprite;
+private var shape1:Shape;
+private var shape2:Shape;
 
     public function new(keys:KeyPoll)
     {
@@ -32,6 +38,54 @@ private var keyPoll:KeyPoll;
         addChild(btnPlay);
 
         addEventListener(Event.ENTER_FRAME, onFrame);
+
+        bar1 = new Sprite();
+        bar1.x = 15;
+        bar1.y = 15;
+
+        var bar1Pic:Bitmap = new Bitmap(new Cat1BarPic(0,0));
+        bar1.addChild(bar1Pic);
+
+        var bar1PicHP:Bitmap = new Bitmap(new Cat1BarMaskPic(0,0));
+        
+        var shape1:Shape = new Shape();
+        shape1.graphics.beginFill(0xFF0000);
+        shape1.graphics.drawRect(0,0, 133,24);
+        shape1.graphics.endFill();
+        shape1.x = 78;
+        shape1.y = 65;
+
+        var bar1Mask:Bitmap = new Bitmap(new Cat1BarMaskPic(0,0));
+        bar1PicHP.x = 78;
+        bar1PicHP.y = 65;
+
+       
+        bar1.addChild(bar1Mask);
+        bar1.addChild(bar1PicHP);
+        bar1.addChild(shape1);
+        hape1.mask = bar1Mask;
+        addChild(bar1);
+
+
+        bar2 = new Sprite();
+        var bar2Pic:Bitmap = new Bitmap(new Cat2BarPic(0,0));
+        bar2.addChild(bar2Pic);
+        var bar2PicHP:Bitmap = new Bitmap(new Cat2BarMaskPic(0,0));
+        var bar2Mask:Bitmap = new Bitmap(new Cat2BarMaskPic(0,0));
+        bar2PicHP.x = 8;
+        bar2PicHP.y = 65;
+        bar2.addChild(bar2PicHP);
+
+        bar2.x = 800 - bar2.width - 15;
+        bar2.y = 15;
+
+        addChild(bar2);
+
+    }
+
+    public function setCat1Hp():Void
+    {
+    	shape1.width = 123;
     }
 
     private function onFrame(event:Event):Void
