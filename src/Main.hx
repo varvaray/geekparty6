@@ -39,7 +39,9 @@ class Main
         root.addChild(back);
 
         var help = new flash.text.TextField();
-        help.text = "Start: space\nPlayer1: WASD\nPlayer2: Arrows";
+        help.defaultTextFormat = new flash.text.TextFormat("_sans", 14, 0xffffff, true);
+        help.autoSize = flash.text.TextFieldAutoSize.LEFT;
+        help.text = "Start: space\nPlayer1: Arrows\nPlayer2: WASD";
         root.addChild(help);
         help.x = (root.stage.stageWidth - help.textWidth) / 2;
 
@@ -52,6 +54,7 @@ class Main
     {
         gui.start = null;
         game = new Game(root, keyPoll);
+        root.setChildIndex(game.root, 1);
         game.onHit = gui.onHit;
     }
 

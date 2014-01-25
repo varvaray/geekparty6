@@ -6,5 +6,5 @@
 -debug
 -lib nape
 -main Main
--resource res/sounds/lose.mp3@music
+-resource res/cats.mp3@music
 -cmd bin\sample.swf
