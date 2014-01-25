@@ -1,0 +1,9 @@
+-cp src
+-swf bin/sample.swf
+-swf-header 800:600:60:cccccc
+-swf-version 11
+-swf-lib res/cats.swf
+-debug
+-lib nape
+-main Main
+-cmd bin\sample.swf
