@@ -47,7 +47,8 @@ private var shape2:Shape;
         bar1.addChild(bar1Pic);
 
         var bar1PicHP:Bitmap = new Bitmap(new Cat1BarMaskPic(0,0));
-        
+        bar1.addChild(bar1PicHP);
+
         var shape1:Shape = new Shape();
         shape1.graphics.beginFill(0xFF0000);
         shape1.graphics.drawRect(0,0, 133,24);
@@ -58,28 +59,42 @@ private var shape2:Shape;
         var bar1Mask:Bitmap = new Bitmap(new Cat1BarMaskPic(0,0));
         bar1PicHP.x = 78;
         bar1PicHP.y = 65;
+        bar1Mask.alpha = 0;
 
-       
-        bar1.addChild(bar1Mask);
-        bar1.addChild(bar1PicHP);
         bar1.addChild(shape1);
-        hape1.mask = bar1Mask;
+        bar1.addChild(bar1Mask);
+        // shape1.mask = bar1Mask;
         addChild(bar1);
+        shape1.width = 0;
 
 
         bar2 = new Sprite();
+        bar2.y = 15;
         var bar2Pic:Bitmap = new Bitmap(new Cat2BarPic(0,0));
         bar2.addChild(bar2Pic);
+
         var bar2PicHP:Bitmap = new Bitmap(new Cat2BarMaskPic(0,0));
-        var bar2Mask:Bitmap = new Bitmap(new Cat2BarMaskPic(0,0));
-        bar2PicHP.x = 8;
-        bar2PicHP.y = 65;
         bar2.addChild(bar2PicHP);
 
-        bar2.x = 800 - bar2.width - 15;
-        bar2.y = 15;
+        var shape2:Shape = new Shape();
+        shape2.graphics.beginFill(0xFF0000);
+        shape2.graphics.drawRect(0,0, 133,24);
+        shape2.graphics.endFill();
+        shape2.x = 800 - bar2.width - 15;
+        shape2.y = 65;
 
+        var bar2Mask:Bitmap = new Bitmap(new Cat2BarMaskPic(0,0));
+        bar2PicHP.x = 800 - bar2.width - 15;
+        bar2PicHP.y = 65;
+        bar2Mask.alpha = 0;
+
+        bar2.x = 800 - bar2.width - 15;
+
+        bar2.addChild(shape2);
+        bar2.addChild(bar2Mask);
+        // shape1.mask = bar1Mask;
         addChild(bar2);
+        shape2.width = 0;
 
     }
 
