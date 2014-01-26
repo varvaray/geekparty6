@@ -51,8 +51,8 @@ class Game
 
         createBorder();
 
-        cat1 = new Cat("Radiant", flash.Lib.attach("cat1"), space, root, 550, 200);
-        cat2 = new Cat("Dire", flash.Lib.attach("cat2"), space, root, 250, 200);
+        cat1 = new Cat("Radiant", flash.Lib.attach("cat1"), space, root, 250, 200);
+        cat2 = new Cat("Dire", flash.Lib.attach("cat2"), space, root, 550, 200);
 
         cat1.head.body.shapes.at(0).filter.collisionGroup = 2;
         cat1.thing.body.shapes.at(0).filter.collisionMask = 4;
